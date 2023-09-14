@@ -1,0 +1,81 @@
+body {
+    font-size: 40px;
+    font-family: Tahoma;
+
+}
+.container {
+    display: flex;
+   flex-direction: row;
+}
+.container2 {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+.useg{
+    width: 90px;
+    height: 140px;
+    border-left: 10px dotted #D0D0FF;
+    background-color: #eeeff2;
+    padding-left: 10px;
+    padding-top: 10px;
+    margin-right: 10px;
+
+}
+
+.BoxE{
+    width: 90px;
+    height: 140px;
+    border-left: 10px dotted #D0D0FF;
+    background-color: #eeeff2;
+    padding-left: 10px;
+    padding-top: 10px;
+    margin-right: 10px;
+
+
+}
+.useg:hover{
+    background-color: yellow;
+    cursor: pointer;
+    color: goldenrod;
+}
+.BoxF{
+    width: 90px;
+    height: 140px;
+    border-left: 10px dotted #D0D0FF;
+    background-color: #eeeff2;
+    padding-left: 10px;
+    padding-top: 10px;
+    margin-right: 10px;
+}
+.container div {
+    text-shadow: 0 0 3px darkblue;
+    box-shadow: 10px 10px;
+    animation: rotate 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) infinite alternate ;
+    animation: rotate 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) infinite alternate ;
+}
+  .container div:hover{
+    background-color: red;
+	color: goldenrod;
+	cursor: pointer;
+	transition: background-color 1s, color 1s;
+	animation-name: borderpop;
+  }
+ @keyframes borderpop {
+    0%	{border: 4px solid black;}
+    50%	{border: 12px solid black;}
+    100%	{border: 4px solid black;}
+  }
+  @keyframes rotate {
+    0% {
+      transform: rotate(0);
+              transform: rotate(0);
+    }
+    100% {
+      transform: rotate(90deg);
+              transform: rotate(90deg);
+    }
+  }
+  

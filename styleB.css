@@ -1,0 +1,52 @@
+body {
+    font-size: 40px;
+    font-family: Tahoma;
+
+}
+.container {
+    display: flex;
+   flex-direction: row;
+}
+.container2 {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+.useg{
+    width: 90px;
+    height: 140px;
+    border-left: 10px dotted #D0D0FF;
+    background-color: #eeeff2;
+    padding-left: 10px;
+    padding-top: 10px;
+    margin-right: 10px;
+
+}
+
+.BoxE{
+    width: 90px;
+    height: 140px;
+    border-left: 10px dotted #D0D0FF;
+    background-color: #eeeff2;
+    padding-left: 10px;
+    padding-top: 10px;
+    margin-right: 10px;
+
+
+}
+.useg:hover{
+    background-color: yellow;
+    cursor: pointer;
+    color: goldenrod;
+}
+.BoxF{
+    width: 90px;
+    height: 140px;
+    border-left: 10px dotted #D0D0FF;
+    background-color: #eeeff2;
+    padding-left: 10px;
+    padding-top: 10px;
+    margin-right: 10px;
+}
