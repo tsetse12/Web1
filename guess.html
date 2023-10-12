@@ -83,6 +83,7 @@
         const inputsContainer = document.querySelector('.inputs');
         const life = document.querySelector('.life');
         const guessed = document.querySelector('.guessed');
+        const usedWords = [];
         let remainingLife = 5;
         let guessedWordNumber = 0;
         let guessedLetterNumber = 0;
@@ -111,9 +112,18 @@ function stopTimer() {
         guessed.textContent = "You have guessed " + guessedWordNumber + " words and " + guessedLetterNumber + " guessed";
 
         function generateRandomWord() {
-            const randomIndex = Math.floor(Math.random() * words.length);
-            return words[randomIndex];
-        }
+    let randomWord;
+    do {
+        randomWord = words[Math.floor(Math.random() * words.length)];
+    } while (usedWords.includes(randomWord));
+
+    usedWords.push(randomWord);
+    if (usedWords.length > 5) {
+        usedWords.shift(); // Remove the oldest word when the array is full
+    }
+
+    return randomWord;
+}
 
         function createGame() {
             
