@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Guessing Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .timer {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .inputs {
+            display: flex;
+            justify-content: center;
+        }
+
+        .inputs .lists {
+            width: 30px;
+            height: 30px;
+            font-size: 18px;
+            text-align: center;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .details {
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .life {
+            margin-bottom: 10px;
+        }
+
+        .guessed {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <div class="timer">Time: 0 seconds</div>
+
+            <div class="inputs"></div>
+            <div class="details">
+
+                <p class="life">You have 5 life</p>
+                <p class="guessed">You have guessed 0 words and 0 guessed</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const words = ['banana', 'apple', 'brick', 'elephant','heart','construct','paradox','batman','spiderman'];
+        const inputsContainer = document.querySelector('.inputs');
+        const life = document.querySelector('.life');
+        const guessed = document.querySelector('.guessed');
+        let remainingLife = 5;
+        let guessedWordNumber = 0;
+        let guessedLetterNumber = 0;
+        let correctWordsInARow = 0;
+        let wrongLettersInARow = 0;
+        let guessedLetter = 0;
+        let word = generateRandomWord();
+        console.log(word);
+const timerDisplay = document.querySelector('.timer');
+
+let seconds = 0;
+let timerInterval;
+
+function startTimer() {
+    timerInterval = setInterval(function () {
+        seconds++;
+        timerDisplay.textContent = "Time: " + seconds + " seconds";
+    }, 1000);
+}
+startTimer();
+function stopTimer() {
+    seconds = 0;
+    clearInterval(timerInterval);
+}
+        life.textContent = "You have " + remainingLife + " life";
+        guessed.textContent = "You have guessed " + guessedWordNumber + " words and " + guessedLetterNumber + " guessed";
+
+        function generateRandomWord() {
+            const randomIndex = Math.floor(Math.random() * words.length);
+            return words[randomIndex];
+        }
+
+        function createGame() {
+            
+            const requiredGuesses = getRequiredGuesses(word.length);
+            const randomIndexes = getRandomIndexes(word.length, requiredGuesses);
+
+            for (let i = 0; i < word.length; i++) {
+                let input = document.createElement('input');
+                input.type = "text";
+                input.maxLength = 1;
+                input.classList.add('lists');
+                input.dataset.index = i;
+
+                if (randomIndexes.includes(i)) {
+                    input.value = word[i];
+                    input.disabled = true;
+                }
+
+                inputsContainer.appendChild(input);
+            }
+
+            inputsContainer.addEventListener("input", initGame);
+        }
+
+        
+        function getRandomIndexes(max, count) {
+            const indexes = [];
+            while (indexes.length < count) {
+                const randomIndex = Math.floor(Math.random() * max);
+                if (!indexes.includes(randomIndex)) {
+                    indexes.push(randomIndex);
+                    guessedLetterNumber++;
+                    
+                }
+            }
+       
+
+            return indexes;
+        }
+
+        let lastGuessedLetter = ''; 
+
+        let lastIncorrectLetter = null; 
+        function initGame(e) {
+    let targetInput = e.target;
+    let key = targetInput.value.toLowerCase();
+
+    if (key.match(/^[A-Za-z]+$/)) {
+        if (remainingLife <= 0) {
+            return; 
+        }
+
+        let correctPositions = [];
+        for (let i = 0; i < word.length; i++) {
+            if (word[i] === key) {
+                correctPositions.push(i);
+            }
+        }
+
+        if (correctPositions.length > 0) {
+            let correctPosition = correctPositions.find(pos => pos === parseInt(targetInput.dataset.index));
+            if (correctPosition !== undefined) {
+                if (targetInput.style.backgroundColor !== "green") {
+                    targetInput.style.backgroundColor = "green";
+                    targetInput.disabled = true;
+                    guessedLetterNumber++;
+                    guessedLetter++;
+               
+                }
+            } else {
+                targetInput.style.backgroundColor = "red";
+                targetInput.value = "";
+                remainingLife--;
+                life.textContent = "You have " + remainingLife + " life";
+                if (remainingLife <= 0) {
+                alert("You lost\n"+"You have guessed "+guessedWordNumber+" words\n"+"You have guessed "+guessedLetter+" letters"+"\n"+"Time Spent seconds "+seconds);
+                resetGame();
+            }
+                
+            }
+
+            if (guessedLetterNumber === word.length) {
+                guessedWordNumber++;
+                guessed.textContent = "You have guessed " + guessedWordNumber + " words and " + guessedLetter + " guessed";
+                correctWordsInARow++;
+                word = generateRandomWord();
+                console.log(word);
+                inputsContainer.innerHTML = '';
+                guessedLetterNumber = 0;
+                createGame();
+
+                if (correctWordsInARow === 5) {
+                    alert("You win time spent "+ seconds+" seconds");
+                    resetGame();
+                }
+            }
+        } else {
+            targetInput.style.backgroundColor = "red";
+            targetInput.value = "";
+            remainingLife--;
+          
+            life.textContent = "You have " + remainingLife + " life";
+            if (remainingLife <= 0) {
+                alert("You lost\n"+"You have guessed "+guessedWordNumber+" words\n"+"You have guessed "+guessedLetter+" Letters"+"\n"+"Time Spent "+seconds+" seconds");
+                resetGame();
+            }
+        }
+    }
+}
+
+
+
+
+
+        function resetGame() {
+            remainingLife = 5;
+            life.textContent = "You have " + remainingLife + " life";
+            guessedWordNumber = 0;
+            guessedLetterNumber = 0;
+            correctWordsInARow = 0;
+            wrongLettersInARow = 0;
+            guessedLetter = 0;
+            guessed.textContent = "You have guessed " + guessedWordNumber + " words and " + guessedLetterNumber + " guessed";
+            word = generateRandomWord();
+            inputsContainer.innerHTML = '';
+            createGame();
+            stopTimer();
+            startTimer();
+        console.log(word);
+
+        }
+
+        function getRequiredGuesses(wordLength) {
+            if (wordLength >= 10) {
+                return 4;
+            } else if (wordLength >= 7) {
+                return 3;
+            } else if (wordLength >= 5) {
+                return 2;
+            }
+            return 1;
+        }
+
+        createGame();
+    </script>
+</body>
+</html>
